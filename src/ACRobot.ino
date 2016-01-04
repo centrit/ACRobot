@@ -8,8 +8,8 @@ const uint8_t pwmA = 3;
 const uint8_t pwmB = 11;
 const uint8_t button = 2;
 
-DCMotor mA(directA, pwmA);
-DCMotor mB(directB, pwmB);
+DCMotor<directA, pwmA> mA;
+DCMotor<directB, pwmB> mB;
 
 void poll()
 {

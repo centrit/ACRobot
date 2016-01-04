@@ -12,14 +12,17 @@ class DCMotorInterface: public PollingInterface
     void setPower(uint8_t power) { _power = power; }
 
   protected:
+    void poll(uint8_t directPin, uint8_t pwmPin);
+
     uint8_t _new_power;
     uint8_t _power;
 };
 
+template < uint8_t directPin, uint8_t pwmPin >
 class DCMotor: public DCMotorInterface
 {
   public:
-    DCMotor(uint8_t directPin, uint8_t pwmPin): _directPin(directPin), _pwmPin(pwmPin)
+    DCMotor()
     {
       pinMode(directPin, OUTPUT);
       pinMode(pwmPin, OUTPUT);
@@ -28,12 +31,9 @@ class DCMotor: public DCMotorInterface
     void setPower(uint8_t power) { _new_power = power; poll(); };
     uint8_t operator= (uint8_t power) { _new_power = power; };
 
-    void poll();
+    void poll() { DCMotorInterface::poll(directPin, pwmPin); }
 
   private:
-
-    uint8_t _directPin;
-    uint8_t _pwmPin;
 };
 
 } // ACRobot namespace
