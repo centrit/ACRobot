@@ -48,6 +48,43 @@ void setup()
 
 void logic()
 {
+  static uint8_t cnt = 0;
+  const char *str;
+
+  switch (key())
+  {
+  case RightKey:
+    str = "Right";
+    cnt++;
+    break;
+  case LeftKey:
+    str = "Left";
+    cnt--;
+    break;
+  case UpKey:
+    str = "Up";
+    cnt += 10;
+    break;
+  case DownKey:
+    str = "Down";
+    cnt -= 10;
+    break;
+  case SelectKey:
+    str = "Select";
+    cnt = 0;
+    break;
+  case NoneKey:
+    str = "None";
+    break;
+  default:
+    str = "Unknown";
+    break;
+  }
+
+  lcd.clear();
+  lcd.print(cnt);
+  lcd.setCursor(0, 1);
+  lcd.print(str);
 }
 
 void loop()

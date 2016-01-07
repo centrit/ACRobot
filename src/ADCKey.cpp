@@ -5,15 +5,15 @@ namespace ACRobot {
 uint8_t ADCKey::readButtons()
 {
   int keyIn = analogRead(_keyPin);
-  if (keyIn > 1000) return None;
+  if (keyIn > 1000) return NoneKey;
 
-  if (keyIn < RightIn) return Right;
-  if (keyIn < LeftIn) return Left;
-  if (keyIn < RightIn) return Up;
-  if (keyIn < RightIn) return Down;
-  if (keyIn < RightIn) return Select;
+  if (keyIn < RightIn) return RightKey;
+  if (keyIn < UpIn) return UpKey;
+  if (keyIn < DownIn) return DownKey;
+  if (keyIn < LeftIn) return LeftKey;
+  if (keyIn < SelectIn) return SelectKey;
 
-  return None;
+  return NoneKey;
 }
 
 } // ACRobot namespace
