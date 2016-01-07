@@ -1,6 +1,7 @@
 #include <LiquidCrystal.h>
 #include "Motor.h"
 #include "ADCKey.h"
+#include "Interval.h"
 
 using namespace ACRobot;
 
@@ -25,30 +26,32 @@ LiquidCrystal lcd(lcdReset, lcdEnable,
                   lcdData0, lcdData1, lcdData2, lcdData3);
 ADCKey key(A0);
 
-void poll()
+Interval global(50);
+
+bool poll()
 {
   mA.poll();
   mB.poll();
   key.poll();
-}
 
-void wait_for_start()
-{
-  pinMode(button, INPUT_PULLUP);
-  while(getDigitalPin(button) == HIGH);
-  pinMode(button, INPUT);
+  return global.poll();
 }
 
 void setup()
 {
   lcd.begin(16, 2);
   lcd.print("Wait for start");
-  wait_for_start();
+  waitForStart(button);
   lcd.clear();
   lcd.print("Starting");
 }
 
+void logic()
+{
+}
+
 void loop()
 {
-  poll();
+  if(poll())
+    logic();
 }
