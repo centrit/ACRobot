@@ -5,7 +5,7 @@
 
 namespace ACRobot {
 
-class ADCKey
+class ADCKey: public PollingInterface
 {
   public:
     ADCKey(uint8_t keyPin): _keyPin(keyPin) {}
