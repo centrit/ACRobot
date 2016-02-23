@@ -16,14 +16,14 @@ DCMotor mB(directB, pwmB);
 
 const uint8_t lcdReset = 8;
 const uint8_t lcdEnable = 9;
-const uint8_t lcdData0 = 4;
-const uint8_t lcdData1 = 5;
-const uint8_t lcdData2 = 6;
-const uint8_t lcdData3 = 7;
+const uint8_t lcdData4 = 4;
+const uint8_t lcdData5 = 5;
+const uint8_t lcdData6 = 6;
+const uint8_t lcdData7 = 7;
 const uint8_t lcdAdcKey = A0;
 
 LiquidCrystal lcd(lcdReset, lcdEnable,
-                  lcdData0, lcdData1, lcdData2, lcdData3);
+                  lcdData4, lcdData5, lcdData6, lcdData7);
 ADCKey key(A0);
 
 Interval global(50);
