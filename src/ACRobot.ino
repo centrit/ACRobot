@@ -4,6 +4,8 @@
 
 using namespace ACRobot;
 
+uint8_t power = 75;
+
 const uint8_t directA = 12;
 const uint8_t directB = 13;
 const uint8_t pwmA = 3;
@@ -15,30 +17,48 @@ DCMotor mB(directB, pwmB);
 
 LCD<LCD_1602A_KEYPAD_SHIELD> lcd;
 
-Interval global(50);
+enum State {
+    GLOBAL = 0,
+    SCREEN = 1,
+    BLINK  = 2
+};
 
-bool poll()
+const unsigned long GLOBAL_INTERVAL = 50;
+const unsigned long SCREEN_INTERVAL = 100;
+const unsigned long BLINK_INTERVAL  = 1000;
+
+const uint8_t NUMBER_OF_INTERVALS = 3;
+Intervals<NUMBER_OF_INTERVALS> intervals;
+
+int poll()
 {
   mA.poll();
   mB.poll();
   lcd.poll();
 
-  return global.poll();
+  return intervals.poll();
 }
 
 void setup()
 {
   lcd.print("Wait for start");
+
+  intervals[GLOBAL] = GLOBAL_INTERVAL;
+  intervals[SCREEN] = SCREEN_INTERVAL;
+  intervals[BLINK]  = BLINK_INTERVAL;
+
   waitForStart(button);
+
   lcd.clear();
   lcd.print("Starting");
 }
 
+
+static uint8_t cnt = 0;
+static const char *str = "Init";
+
 void logic()
 {
-  static uint8_t cnt = 0;
-  const char *str;
-
   switch (lcd())
   {
   case RightKey:
@@ -68,15 +88,33 @@ void logic()
     str = "Unknown";
     break;
   }
+}
 
+void screen()
+{
   lcd.clear();
   lcd.print(cnt);
   lcd.setCursor(0, 1);
   lcd.print(str);
 }
 
+void blink()
+{
+    power = -power;
+}
+
 void loop()
 {
-  if(poll())
-    logic();
+  switch (poll())
+  {
+    case GLOBAL:
+      logic();
+      break;
+    case SCREEN:
+      screen();
+      break;
+    case BLINK:
+      blink();
+      break;
+  }
 }
