@@ -1,6 +1,5 @@
-#include <LiquidCrystal.h>
+#include "LCD.h"
 #include "Motor.h"
-#include "ADCKey.h"
 #include "Interval.h"
 
 using namespace ACRobot;
@@ -14,17 +13,7 @@ const uint8_t button = 2;
 DCMotor mA(directA, pwmA);
 DCMotor mB(directB, pwmB);
 
-const uint8_t lcdReset = 8;
-const uint8_t lcdEnable = 9;
-const uint8_t lcdData4 = 4;
-const uint8_t lcdData5 = 5;
-const uint8_t lcdData6 = 6;
-const uint8_t lcdData7 = 7;
-const uint8_t lcdAdcKey = A0;
-
-LiquidCrystal lcd(lcdReset, lcdEnable,
-                  lcdData4, lcdData5, lcdData6, lcdData7);
-ADCKey key(A0);
+LCD<LCD_1602A_KEYPAD_SHIELD> lcd;
 
 Interval global(50);
 
@@ -32,14 +21,13 @@ bool poll()
 {
   mA.poll();
   mB.poll();
-  key.poll();
+  lcd.poll();
 
   return global.poll();
 }
 
 void setup()
 {
-  lcd.begin(16, 2);
   lcd.print("Wait for start");
   waitForStart(button);
   lcd.clear();
@@ -51,7 +39,7 @@ void logic()
   static uint8_t cnt = 0;
   const char *str;
 
-  switch (key())
+  switch (lcd())
   {
   case RightKey:
     str = "Right";
